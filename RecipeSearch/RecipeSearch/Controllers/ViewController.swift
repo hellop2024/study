@@ -51,9 +51,8 @@ class ViewController: UIViewController {
         // 첫글자 대문자 설정 없애기
         searchController.searchBar.autocapitalizationType = .none
         //     ==> 글자마다 검색 기능 + 새로운 화면을 보여주는 것도 가능
-        searchController.searchResultsUpdater = self
-        
-        
+       searchController.searchResultsUpdater = self
+        //searchController.searchBar.delegate = self
     }
     
     func setupFirstSectionCollectionView() {
@@ -188,7 +187,17 @@ extension ViewController: UICollectionViewDataSource {
 extension ViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // 셀이 선택되었을 때의 동작을 정의합니다.
-        
+        // 선택된 레시피 데이터 가져오기
+                let selectedRecipe = recipeArrays[indexPath.item]
+                
+                // RecipesController 인스턴스 생성
+                let recipesController = RecipeDetailController()
+                
+                // RecipesController에 데이터 전달
+                recipesController.recipe = selectedRecipe
+                
+                // RecipesController 화면으로 이동
+                navigationController?.pushViewController(recipesController, animated: true)
     }
 }
 
@@ -204,3 +213,7 @@ extension ViewController: UISearchResultsUpdating {
         vc.searchTerm = searchController.searchBar.text ?? ""
     }
 }
+
+
+
+

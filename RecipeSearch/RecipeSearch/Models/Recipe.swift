@@ -44,6 +44,7 @@ struct Recipe: Codable {
     let MANUAL16, MANUAL13, MANUAL14: String?
     let imageUrl: String?
     
+
     enum CodingKeys: String, CodingKey {
         case RCP_PARTS_DTLS, RCP_WAY2, MANUAL_IMG20, MANUAL20
         case RCP_SEQ, INFO_NA, INFO_WGT, INFO_PRO
@@ -61,7 +62,32 @@ struct Recipe: Codable {
         case MANUAL16, MANUAL13, MANUAL14
         case imageUrl = "ATT_FILE_NO_MAIN"
     }
-
+    
+    // '만드는법' 설명과 이미지 URL을 위한 계산된 프로퍼티
+        var manualSteps: [String] {
+            var steps: [String] = []
+            let mirror = Mirror(reflecting: self)
+            for index in 1...20 {
+                let stepKey = String(format: "MANUAL%02d", index)
+                if let stepValue = mirror.children.first(where: { $0.label == stepKey })?.value as? String, !stepValue.isEmpty {
+                    steps.append(stepValue)
+                }
+            }
+            return steps
+        }
+        
+        var manualImages: [String] {
+            var images: [String] = []
+            let mirror = Mirror(reflecting: self)
+            for index in 1...20 {
+                let imageKey = String(format: "MANUAL_IMG%02d", index)
+                if let imageValue = mirror.children.first(where: { $0.label == imageKey })?.value as? String, !imageValue.isEmpty {
+                    images.append(imageValue)
+                }
+            }
+            return images
+        }
+        
 }
 
 // "RESULT" 키에 해당하는 데이터를 나타내는 구조체

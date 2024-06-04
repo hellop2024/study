@@ -40,17 +40,15 @@ final class NetworkManager {
             completion(result)
         }
     }
-//    func fetchRecipe(searchTerm: String, completion: @escaping NetworkCompletion) {
-//        if let encodedTerm = searchTerm.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-//            let urlString = "\(RecipeApi.requestUrl)\(RecipeApi.nameParam)\(encodedTerm)"
-//            print(urlString)
-//            performRequest(with: urlString) { result in
-//                completion(result)
-//            }
-//        } else {
-//            completion(.failure(.dataError)) // 적절한 에러 처리
-//        }
-//    }
+    
+    // 네트워킹 요청하는 함수
+    func fetchRecipeButton(searchTerm: String, completion: @escaping NetworkCompletion) {
+        let urlString = "http://openapi.foodsafetykorea.go.kr/api/2702856d58254bc6affa/COOKRCP01/json/1/100/RCP_PAT2=\(searchTerm)"
+        print(urlString)
+        performRequest(with: urlString) { result in
+            completion(result)
+        }
+    }
     
     // 실제 Request하는 함수 (비동기적 실행 ===> 클로저 방식으로 끝난 시점을 전달 받도록 설계)
     private func performRequest(with urlString: String, completion: @escaping NetworkCompletion) {
